@@ -18,6 +18,10 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.send(`Welcome, Website is Working on ${process.env.FRONTEND_URL}`);
+});
+
 //Importing and Using Routes
 import course from "./routes/courseRoutes.js";
 import user from "./routes/userRoutes.js";

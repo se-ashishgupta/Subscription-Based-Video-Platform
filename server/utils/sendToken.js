@@ -1,14 +1,19 @@
 export const sendToken = (res, user, message, statusCode = 200) => {
   const token = user.getJWTToken();
 
-  const options = {
-    expires: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-  };
+  // const options = {
+  //   httpOnly: true,
+  //   maxAge: 15 * 24 * 60 * 60 * 1000,
+  //   sameSite: process.env.NODE_ENV === "Developemnt" ? "lax" : "none",
+  //   secure: process.env.NODE_ENV === "Developemnt" ? false : true,
+  // };
 
-  res.status(statusCode).cookie("token", token, options).json({
+  res.status(statusCode).cookie("token", token, {
+    httpOnly: true,
+    maxAge: 15 * 24 * 60 * 60 * 1000,
+    sameSite: process.env.NODE_ENV === "Developemnt" ? "lax" : "none",
+    secure: process.env.NODE_ENV === "Developemnt" ? false : true,
+  }).json({
     success: true,
     message,
     user,

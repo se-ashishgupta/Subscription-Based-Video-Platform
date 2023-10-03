@@ -50,7 +50,7 @@ export const logout = () => async (dispatch) => {
                 withCredentials: true,
             });
 
-        dispatch({ type: "logoutSuccess", payload: data });
+        dispatch({ type: "logoutSuccess", payload: data.message });
 
     } catch (error) {
 

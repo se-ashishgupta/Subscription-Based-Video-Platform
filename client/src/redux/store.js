@@ -10,4 +10,4 @@ const store = configureStore({
 });
 
 export default store;
-export const server = 'https://subscription-based-video-platform-server.vercel.app/api/v1';
+export const server = process.env.REACT_APP_SERVER_URI;

@@ -57,20 +57,22 @@ export const login = catchAsyncError(async (req, res, next) => {
 });
 
 export const logout = catchAsyncError(async (req, res, next) => {
+  const { serial_key } = req.body;
 
-  res
-    .status(200)
-    .cookie("token", null, {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-    })
-    .json({
-      success: true,
-      message: "Logged Out Successfully",
-    });
-
+  if (serial_key) {
+    res
+      .status(200)
+      .cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
+      .json({
+        success: true,
+        message: "Logged Out Successfully",
+      });
+  }
 
 });
 

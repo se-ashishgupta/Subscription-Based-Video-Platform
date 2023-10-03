@@ -83,7 +83,7 @@ const Home = () => {
           disablePictureInPicture
           disableRemotePlayback
           src={introVideo}
-          // autoPlay
+          autoPlay
         ></video>
       </div>
     </section>

@@ -24,6 +24,7 @@ export const authorizeSubscribers = (req, res, next) => {
 
   next();
 };
+
 export const authorizeAdmin = (req, res, next) => {
   if (req.user.role !== "admin") {
     return next(

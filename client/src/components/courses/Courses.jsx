@@ -23,6 +23,8 @@ const Course = ({
   description,
   lectureCount,
 }) => {
+
+
   return (
     <VStack className="course" alignItems={['center', 'flex-start']}>
       <Image src={imageSrc} boxSize={60} objectFit={'contain'} />

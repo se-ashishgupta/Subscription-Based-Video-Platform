@@ -28,7 +28,7 @@ router.route("/register").post(singleUpload, register);
 router.route("/login").post(login);
 
 //To Login user
-router.route("/logout").post(logout);
+router.route("/logout").get(logout);
 
 //Get My profile
 router.route("/me").get(isAuthenticated, getMyProfile);

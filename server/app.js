@@ -42,7 +42,7 @@ export default app;
 
 app.get("/", (req, res) => {
   res.send(
-    `<h1>Welcome, Website is Working on ${process.env.FRONTEND_URL} click <a href=${process.env.FRONTEND_URL}>here</a></h1>`
+    `<h1>Welcome, Website is Working on ${process.env.FRONTEND_URL2} click <a href=${process.env.FRONTEND_URL}>here</a></h1>`
   );
 });
 

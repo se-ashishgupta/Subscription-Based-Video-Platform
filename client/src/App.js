@@ -30,7 +30,6 @@ import Dashboard from "./components/admin/dashboard/Dashboard";
 import Loader from './components/layout/loader/Loader';
 
 const App = () => {
-
   const { isAuthenticated, user, message, error, loading } = useSelector(state => state.user);
 
   const dispatch = useDispatch();
@@ -53,6 +52,7 @@ const App = () => {
 
 
   return (
+
     <Router>
       {
         loading ? (<Loader />) : <>

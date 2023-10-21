@@ -25,7 +25,7 @@ const router = express.Router();
 router.route("/register").post(singleUpload, register);
 
 //To Login user
-router.route("/login").post(login);
+router.route("/login").get(login);
 
 //To Login user
 router.route("/logout").post(logout);

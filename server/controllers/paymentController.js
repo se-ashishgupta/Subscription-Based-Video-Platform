@@ -32,7 +32,7 @@ export const buySubscription = catchAsyncError(async (req, res, next) => {
 });
 
 export const paymentVerification = catchAsyncError(async (req, res, next) => {
-  const { razorpay_payment_id, razorpay_signature, razorpay_order_id } =
+  const { razorpay_payment_id, razorpay_signature, razorpay_subscription_id } =
     req.body;
 
   const user = await User.findById(req.user._id);
@@ -41,7 +41,7 @@ export const paymentVerification = catchAsyncError(async (req, res, next) => {
 
   const generated_signature = crypto
     .createHmac("sha256", process.env.RAZORPAY_API_SECRET)
-    .update(razorpay_payment_id + " | " + subscription_id, "utf-8")
+    .update(razorpay_payment_id + "|" + subscription_id, "utf-8")
     .digest("hex");
 
   const isAuthentic = generated_signature === razorpay_signature;
@@ -52,7 +52,7 @@ export const paymentVerification = catchAsyncError(async (req, res, next) => {
   //database comes here
   await Payment.create({
     razorpay_payment_id,
-    razorpay_order_id,
+    razorpay_subscription_id,
     razorpay_signature,
   });
 
@@ -82,7 +82,7 @@ export const cancelSubscription = catchAsyncError(async (req, res, next) => {
   await instance.subscriptions.cancel(subscriptionId);
 
   const payment = await Payment.findOne({
-    razorpay_order_id: subscriptionId,
+    razorpay_subscription_id: subscriptionId,
   });
 
   const gap = Date.now() - payment.createdAt;

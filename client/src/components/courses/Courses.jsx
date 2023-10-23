@@ -33,13 +33,8 @@ const Courses = () => {
     'Game Development',
   ];
 
-  const addToPlaylistHandler = async (courseId) => {
-    try {
-      await dispatch(addToPlaylist(courseId));
-      dispatch(loadUser());
-    } catch (error) {
-
-    }
+  const addToPlaylistHandler = (courseId) => {
+    dispatch(addToPlaylist(courseId));
   };
 
   const { loading, courses, error, message } = useSelector(state => state.course);
@@ -54,6 +49,7 @@ const Courses = () => {
     if (message) {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
+      dispatch(loadUser());
     }
   }, [dispatch, category, keyword, error, message]);
 

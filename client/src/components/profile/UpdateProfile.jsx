@@ -18,7 +18,6 @@ const UpdateProfile = ({ user }) => {
   const submitHandler = async e => {
     e.preventDefault();
     await dispatch(updateProfile(name, email));
-    dispatch(loadUser());
     navigate('/profile');
   };
 

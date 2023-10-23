@@ -55,7 +55,6 @@ const schema = new mongoose.Schema({
   },
 
   resetPasswordToken: String,
-
   resetPasswordExpire: String,
 });
 

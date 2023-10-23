@@ -1,9 +1,10 @@
 import { Button, Container, Heading, Input, VStack } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateProfile } from '../../redux/actions/profile';
 import { loadUser } from '../../redux/actions/user';
+import toast from 'react-hot-toast';
 
 
 
@@ -11,18 +12,17 @@ const UpdateProfile = ({ user }) => {
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
 
-
-  const { loading } = useSelector(state => state.profile);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const submitHandler = async e => {
     e.preventDefault();
     await dispatch(updateProfile(name, email));
-    await dispatch(loadUser());
+    dispatch(loadUser());
     navigate('/profile');
   };
+
+  const { loading } = useSelector(state => state.profile);
 
   return (
     <Container py="16" minH={'90vh'}>

@@ -54,9 +54,10 @@ const App = () => {
   return (
 
     <Router>
+      <Header isAuthenticated={isAuthenticated} user={user} />
       {
         loading ? (<Loader />) : <>
-          <Header isAuthenticated={isAuthenticated} user={user} />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
@@ -81,12 +82,16 @@ const App = () => {
               <Register />
             </ProtectedRoute>} />
 
-            <Route path="/forgetpassword" element={<ForgetPassword />} />
+            <Route path="/forgetpassword" element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect={"/profile"}>
+              <ForgetPassword />
+            </ProtectedRoute>} />
 
-            <Route path="/resetpassword/:token" element={<ResetPassword />} />
+            <Route path="/resetpassword/:token" element={<ProtectedRoute isAuthenticated={!isAuthenticated} redirect={"/profile"}>
+              <ResetPassword />
+            </ProtectedRoute>} />
 
             <Route path="/subscribe" element={<ProtectedRoute isAuthenticated={isAuthenticated}>
-              <Subscribe />
+              <Subscribe user={user} />
             </ProtectedRoute>} />
 
             <Route path="*" element={<NotFound />} />
@@ -98,6 +103,7 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/request" element={<Request />} />
             <Route path="/about" element={<About />} />
+
 
 
             {/* Admin Routes */}
@@ -117,12 +123,11 @@ const App = () => {
               <Users />
             </ProtectedRoute>} />
 
-
           </Routes>
-          <Footer />
-          <Toaster />
         </>
       }
+      <Footer />
+      <Toaster />
     </Router>
   );
 };

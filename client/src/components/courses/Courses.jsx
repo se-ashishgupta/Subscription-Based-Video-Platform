@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Container,
@@ -12,6 +12,105 @@ import {
 } from '@chakra-ui/react';
 
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCourses } from '../../redux/actions/course';
+import toast from 'react-hot-toast';
+import { addToPlaylist } from '../../redux/actions/profile';
+import { loadUser } from '../../redux/actions/user';
+
+const Courses = () => {
+  const [keyword, setKeyword] = useState('');
+  const [category, setCategory] = useState('');
+
+  const dispatch = useDispatch();
+
+  const categories = [
+    'Web Development',
+    ' Artificial Inteligence',
+    'Data Structure and Algorithm',
+    'App Developemnt',
+    'Data Science',
+    'Game Development',
+  ];
+
+  const addToPlaylistHandler = async (courseId) => {
+    try {
+      await dispatch(addToPlaylist(courseId));
+      dispatch(loadUser());
+    } catch (error) {
+
+    }
+  };
+
+  const { loading, courses, error, message } = useSelector(state => state.course);
+
+  useEffect(() => {
+    dispatch(getAllCourses(category, keyword));
+
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+  }, [dispatch, category, keyword, error, message]);
+
+  return (
+    <Container minH={'95vh'} maxW={'container.lg'} paddingY={8}>
+      <Heading children="All Courses" m={8} />
+
+      <Input
+        value={keyword}
+        onChange={e => setKeyword(e.target.value)}
+        placeholder="Search Courses..."
+        type="text"
+        focusBorderColor="blue.400"
+      />
+      <HStack
+        overflowX={'auto'}
+        paddingY={8}
+        css={{
+          '&::-webkit-scrollbar': { display: 'none' },
+        }}
+      >
+        {categories.map((item, index) => (
+          <Button key={index} onClick={() => setCategory(item)} minW={60}>
+            <Text children={item} />
+          </Button>
+        ))}
+      </HStack>
+
+      <Stack
+        direction={['column', 'row']}
+        flexWrap={'wrap'}
+        justifyContent={['flex-start', 'space-evenly']}
+        alignItems={['center', 'flex-start']}
+      >
+
+        {
+          courses.length > 0 ? courses.map((item) => (
+            <Course
+              key={item._id}
+              views={item.views}
+              title={item.title}
+              imageSrc={item.poster.url}
+              id={item._id}
+              creator={item.createdBy}
+              description={item.description}
+              lectureCount={item.numOfVideos}
+              addToPlaylistHandler={addToPlaylistHandler}
+              loading={loading}
+            />
+
+          )) : <><Heading opacity={0.5} mt={4} children="Courses Not Found"></Heading></>
+        }
+
+      </Stack>
+    </Container>
+  );
+};
 
 const Course = ({
   views,
@@ -22,6 +121,7 @@ const Course = ({
   creator,
   description,
   lectureCount,
+  loading
 }) => {
 
 
@@ -68,6 +168,7 @@ const Course = ({
           <Button colorScheme="blue">Watch Now</Button>
         </Link>
         <Button
+          isLoading={loading}
           variant={'ghost'}
           colorScheme="blue"
           onClick={() => addToPlaylistHandler(id)}
@@ -78,79 +179,4 @@ const Course = ({
     </VStack>
   );
 };
-const Courses = () => {
-  const [keyword, setKeyword] = useState('');
-  const [category, setCategory] = useState('');
-
-  const addToPlaylistHandler = () => {
-    console.log('Added to Playlist');
-  };
-  const categories = [
-    'Web Development',
-    ' Artificial Inteligence',
-    'Data Structure and Algorithm',
-    'App Developemnt',
-    'Data Science',
-    'Game Development',
-  ];
-  return (
-    <Container minH={'95vh'} maxW={'container.lg'} paddingY={8}>
-      <Heading children="All Courses" m={8} />
-
-      <Input
-        value={keyword}
-        onChange={e => setKeyword(e.target.value)}
-        placeholder="Search Courses..."
-        type="text"
-        focusBorderColor="blue.400"
-      />
-      <HStack
-        overflowX={'auto'}
-        paddingY={8}
-        css={{
-          '&::-webkit-scrollbar': { display: 'none' },
-        }}
-      >
-        {categories.map((item, index) => (
-          <Button key={index} onClick={() => setCategory(item)} minW={60}>
-            <Text children={item} />
-          </Button>
-        ))}
-      </HStack>
-
-      <Stack
-        direction={['column', 'row']}
-        flexWrap={'wrap'}
-        justifyContent={['flex-start', 'space-evenly']}
-        alignItems={['center', 'flex-start']}
-      >
-        <Course
-          views={8}
-          title={'Sample'}
-          imageSrc={
-            'https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-course-photos.s3.amazonaws.com/cb/3c4030d65011e682d8b14e2f0915fa/shutterstock_226881610.jpg?auto=format%2Ccompress&dpr=1'
-          }
-          id={'Sample'}
-          creator={'Sample'}
-          description={'Sample'}
-          lectureCount={10}
-          addToPlaylistHandler={addToPlaylistHandler}
-        />
-        <Course
-          views={8}
-          title={'Sample'}
-          imageSrc={
-            'https://d3njjcbhbojbot.cloudfront.net/api/utilities/v1/imageproxy/https://coursera-course-photos.s3.amazonaws.com/cb/3c4030d65011e682d8b14e2f0915fa/shutterstock_226881610.jpg?auto=format%2Ccompress&dpr=1'
-          }
-          id={'Sample'}
-          creator={'Sample'}
-          description={'Sample'}
-          lectureCount={10}
-          addToPlaylistHandler={addToPlaylistHandler}
-        />
-      </Stack>
-    </Container>
-  );
-};
-
 export default Courses;

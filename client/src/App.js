@@ -28,6 +28,7 @@ import AdminCourses from "./components/admin/adminCourses/AdminCourses";
 import Users from "./components/admin/users/Users";
 import Dashboard from "./components/admin/dashboard/Dashboard";
 import Loader from './components/layout/loader/Loader';
+import CoursePage from './components/CoursePage/CoursePage';
 
 const App = () => {
   const { isAuthenticated, user, message, error, loading } = useSelector(state => state.user);
@@ -61,6 +62,15 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses />} />
+
+            <Route
+              path="/course/:id"
+              element={
+                <ProtectedRoute isAuthenticated={isAuthenticated}>
+                  <CoursePage user={user} />
+                </ProtectedRoute>
+              }
+            />
 
             <Route path="/profile" element={<ProtectedRoute isAuthenticated={isAuthenticated}>
               <Profile user={user} />

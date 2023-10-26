@@ -61,12 +61,12 @@ const Dashboard = () => {
     loading,
     stats,
     viewsCount,
-    subscriptionCount,
+    subscriptionsCount,
     usersCount,
-    subscriptionPercentage,
+    subscriptionsPercentage,
     viewsPercentage,
     usersPercentage,
-    subscriptionProfit,
+    subscriptionsProfit,
     viewsProfit,
     usersProfit,
   } = useSelector(state => state.admin);
@@ -120,9 +120,9 @@ const Dashboard = () => {
             />
             <Databox
               title="Subscription"
-              qty={subscriptionCount}
-              qtyPercentage={subscriptionPercentage}
-              profit={subscriptionProfit}
+              qty={subscriptionsCount}
+              qtyPercentage={subscriptionsPercentage}
+              profit={subscriptionsProfit}
             />
           </Stack>
 
@@ -166,9 +166,9 @@ const Dashboard = () => {
                   value={usersPercentage}
                 />
                 <Bar
-                  profit={subscriptionProfit}
+                  profit={subscriptionsProfit}
                   title="Subscription"
-                  value={subscriptionPercentage}
+                  value={subscriptionsPercentage}
                 />
               </Box>
             </Box>
@@ -177,7 +177,7 @@ const Dashboard = () => {
               <Heading textAlign={'center'} size="md" mb="4" children="Users" />
 
               <DoughnutChart
-                users={[subscriptionCount, usersCount - subscriptionCount]}
+                users={[subscriptionsCount, usersCount - subscriptionsCount]}
               />
             </Box>
           </Grid>

@@ -23,7 +23,8 @@ import cursor from '../../../assets/images/cursor.png';
 import Sidebar from '../Sidebar';
 import CourseModal from './CourseModal';
 import toast from 'react-hot-toast';
-import { getAllCourses } from '../../../redux/actions/course';
+import { getAllCourses, getCourseLectures } from '../../../redux/actions/course';
+import { addLecture, deleteCourse, deleteLecture } from '../../../redux/actions/admin';
 
 const AdminCourses = () => {
   const { courses, lectures } = useSelector(state => state.course);
@@ -38,31 +39,31 @@ const AdminCourses = () => {
   const [courseTitle, setCourseTitle] = useState('');
 
   const coureDetailsHandler = (courseId, title) => {
-    // dispatch(getCourseLectures(courseId));
-    // onOpen();
-    // setCourseId(courseId);
-    // setCourseTitle(title);
+    dispatch(getCourseLectures(courseId));
+    onOpen();
+    setCourseId(courseId);
+    setCourseTitle(title);
   };
+
   const deleteButtonHandler = courseId => {
-    console.log(courseId);
-    // dispatch(deleteCourse(courseId));
+    dispatch(deleteCourse(courseId));
   };
 
   const deleteLectureButtonHandler = async (courseId, lectureId) => {
-    // await dispatch(deleteLecture(courseId, lectureId));
-    // dispatch(getCourseLectures(courseId));
+    await dispatch(deleteLecture(courseId, lectureId));
+    dispatch(getCourseLectures(courseId));
   };
 
   const addLectureHandler = async (e, courseId, title, description, video) => {
-    // e.preventDefault();
-    // const myForm = new FormData();
+    e.preventDefault();
+    const myForm = new FormData();
 
-    // myForm.append('title', title);
-    // myForm.append('description', description);
-    // myForm.append('file', video);
+    myForm.append('title', title);
+    myForm.append('description', description);
+    myForm.append('file', video);
 
-    // await dispatch(addLecture(courseId, myForm));
-    // dispatch(getCourseLectures(courseId));
+    await dispatch(addLecture(courseId, myForm));
+    dispatch(getCourseLectures(courseId));
   };
 
   useEffect(() => {

@@ -60,9 +60,9 @@ const Dashboard = () => {
   const {
     loading,
     stats,
-    viewsCount,
-    subscriptionsCount,
-    usersCount,
+    viewsCounts,
+    subscriptionsCounts,
+    userCounts,
     subscriptionsPercentage,
     viewsPercentage,
     usersPercentage,
@@ -108,19 +108,19 @@ const Dashboard = () => {
           >
             <Databox
               title="Views"
-              qty={viewsCount}
+              qty={viewsCounts}
               qtyPercentage={viewsPercentage}
               profit={viewsProfit}
             />
             <Databox
               title="Users"
-              qty={usersCount}
+              qty={userCounts}
               qtyPercentage={usersPercentage}
               profit={usersProfit}
             />
             <Databox
               title="Subscription"
-              qty={subscriptionsCount}
+              qty={subscriptionsCounts}
               qtyPercentage={subscriptionsPercentage}
               profit={subscriptionsProfit}
             />
@@ -177,7 +177,7 @@ const Dashboard = () => {
               <Heading textAlign={'center'} size="md" mb="4" children="Users" />
 
               <DoughnutChart
-                users={[subscriptionsCount, usersCount - subscriptionsCount]}
+                users={[subscriptionsCounts, userCounts - subscriptionsCounts]}
               />
             </Box>
           </Grid>

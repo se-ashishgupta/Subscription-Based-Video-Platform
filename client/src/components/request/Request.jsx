@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -10,15 +10,44 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { courseRequest } from '../../redux/actions/other';
+import toast from 'react-hot-toast';
+
+
 const Request = () => {
   const [email, setEmail] = useState(' ');
   const [name, setName] = useState('');
   const [course, setCourse] = useState('');
+
+  const { loading, error, message } = useSelector(state => state.other);
+  const dispatch = useDispatch();
+
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(courseRequest(name, email, course));
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+
+  }, [dispatch, error, message,]);
+
   return (
     <Container h={'92vh'}>
       <VStack h={'full'} justifyContent={'center'} spacing={16}>
         <Heading children="Request New Course" />
         <form
+          onSubmit={submitHandler}
           style={{
             width: '100%',
           }}
@@ -59,7 +88,7 @@ const Request = () => {
             />
           </Box>
 
-          <Button my={4} colorScheme="blue" type="submit">
+          <Button my={4} isLoading={loading} colorScheme="blue" type="submit">
             Send Mail
           </Button>
 

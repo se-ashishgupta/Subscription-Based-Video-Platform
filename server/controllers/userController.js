@@ -288,6 +288,8 @@ export const updateUserRole = catchAsyncError(async (req, res, next) => {
 });
 
 export const deleteUser = catchAsyncError(async (req, res, next) => {
+  if (req.params.id == req.user._id) return next(new ErrorHandler("You are Admin, You Can Not Delete YourSelf", 404));
+
   const user = await User.findById(req.params.id);
 
   if (!user) return next(new ErrorHandler("User Not Found", 404));

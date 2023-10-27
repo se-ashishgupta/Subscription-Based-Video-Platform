@@ -4,6 +4,7 @@ import { Stats } from "../models/Stats.js";
 import ErrorHandler from "../utils/errorHandler.js";
 import getDataUri from "../utils/dataUri.js";
 import cloudinary from "cloudinary";
+import { User } from "../models/User.js";
 
 export const getAllCourses = catchAsyncError(async (req, res, next) => {
   const keyword = req.query.keyword || "";
@@ -119,6 +120,9 @@ export const deleteCourse = catchAsyncError(async (req, res, next) => {
   const course = await Course.findById(id);
 
   if (!course) return next(new ErrorHandler("Course Not Found", 404));
+
+  // Find all users who have the course in their playlist and delete
+  const userWithCourse = await User.updateMany({ 'playlist.course': id }, { $pull: { playlist: { course: id } } });
 
   // Delete Course Poster
   await cloudinary.v2.uploader.destroy(course.poster.public_id);
